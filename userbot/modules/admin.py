@@ -729,50 +729,6 @@ async def kick(usr):
         )
 
 
-@register(outgoing=True, pattern=r"^\.users ?(.*)")
-async def get_users(show):
-    info = await show.client.get_entity(show.chat_id)
-    title = info.title or "Grup Ini"
-    mentions = "Pengguna Di {}: \n".format(title)
-    try:
-        if not show.pattern_match.group(1):
-            async for user in show.client.iter_participants(show.chat_id):
-                if not user.deleted:
-                    mentions += (
-                        f"\n[{user.first_name}](tg://user?id={user.id}) `{user.id}`"
-                    )
-                else:
-                    mentions += f"\nAkun Terhapus `{user.id}`"
-        else:
-            searchq = show.pattern_match.group(1)
-            async for user in show.client.iter_participants(
-                show.chat_id, search=f"{searchq}"
-            ):
-                if not user.deleted:
-                    mentions += (
-                        f"\n[{user.first_name}](tg://user?id={user.id}) `{user.id}`"
-                    )
-                else:
-                    mentions += f"\nAkun Terhapus `{user.id}`"
-    except ChatAdminRequiredError as err:
-        mentions += " " + str(err) + "\n"
-    try:
-        await show.edit(mentions)
-    except MessageTooLongError:
-        await show.edit(
-            "Grup Ini Terlalu Besar Mengunggah Daftar Pengguna Sebagai File."
-        )
-        with open("daftarpengguna.txt", "w+") as file:
-            file.write(mentions)
-        await show.client.send_file(
-            show.chat_id,
-            "daftarpengguna.txt",
-            caption="Pengguna Dalam Grup {}".format(title),
-            reply_to=show.id,
-        )
-        remove("daftarpengguna.txt")
-
-
 async def get_user_from_event(event):
     args = event.pattern_match.group(1).split(" ", 1)
     extra = None
@@ -816,50 +772,6 @@ async def get_user_from_id(user, event):
         return await event.edit(str(err))
 
     return user_obj
-
-
-@register(outgoing=True, pattern=r"^\.usersdel ?(.*)")
-async def get_usersdel(show):
-    info = await show.client.get_entity(show.chat_id)
-    title = info.title or "Grup Ini"
-    mentions = "**Daftar Akun Terhapus Di** {}: \n".format(title)
-    try:
-        if not show.pattern_match.group(1):
-            async for user in show.client.iter_participants(show.chat_id):
-                if not user.deleted:
-                    mentions += (
-                        f"\n👻 [{user.first_name}](tg://user?id={user.id}) `{user.id}`"
-                    )
-        #       else:
-        #                mentions += f"\nAkun Terhapus `{user.id}`"
-        else:
-            searchq = show.pattern_match.group(1)
-            async for user in show.client.iter_participants(
-                show.chat_id, search=f"{searchq}"
-            ):
-                if not user.deleted:
-                    mentions += (
-                        f"\n[{user.first_name}](tg://user?id={user.id}) `{user.id}`"
-                    )
-        #       else:
-    #              mentions += f"\nAkun Terhapus `{user.id}`"
-    except ChatAdminRequiredError as err:
-        mentions += " " + str(err) + "\n"
-    try:
-        await show.edit(mentions)
-    except MessageTooLongError:
-        await show.edit(
-            "Grup Ini Terlalu Besar, Mengunggah Daftar Akun Terhapus Sebagai File."
-        )
-        with open("daftarpengguna.txt", "w+") as file:
-            file.write(mentions)
-        await show.client.send_file(
-            show.chat_id,
-            "daftarpengguna.txt",
-            caption="Daftar Pengguna {}".format(title),
-            reply_to=show.id,
-        )
-        remove("daftarpengguna.txt")
 
 
 async def get_userdel_from_event(event):
@@ -907,43 +819,6 @@ async def get_userdel_from_id(user, event):
     return user_obj
 
 
-@register(outgoing=True, pattern=r"^\.bots$", groups_only=True)
-async def get_bots(show):
-    info = await show.client.get_entity(show.chat_id)
-    title = info.title or "Grup Ini"
-    mentions = f"<b>Daftar Bot Di {title}:</b>\n"
-    try:
-        if isinstance(show.to_id, PeerChat):
-            return await show.edit(
-                "`Saya mendengar bahwa hanya Supergrup yang dapat memiliki bot`"
-            )
-        async for user in show.client.iter_participants(
-            show.chat_id, filter=ChannelParticipantsBots
-        ):
-            if not user.deleted:
-                link = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
-                userid = f"<code>{user.id}</code>"
-                mentions += f"\n ⚜️ {link} {userid}"
-            else:
-                mentions += f"\nBot Terhapus <code>{user.id}</code>"
-    except ChatAdminRequiredError as err:
-        mentions += " " + str(err) + "\n"
-    try:
-        await show.edit(mentions, parse_mode="html")
-    except MessageTooLongError:
-        await show.edit(
-            "Terlalu Banyak Bot Di Grup Ini, Mengunggah Daftar Bot Sebagai File."
-        )
-        with open("botlist.txt", "w+") as file:
-            file.write(mentions)
-        await show.client.send_file(
-            show.chat_id,
-            "botlist.txt",
-            caption="Daftar Bot Di {}".format(title),
-            reply_to=show.id,
-        )
-        remove("botlist.txt")
-
 
 CMD_HELP.update(
     {
@@ -967,10 +842,6 @@ CMD_HELP.update(
         \n  •  **Function : **Tag semua member dalam grup.\
         \n\n  •  **Syntax :** `.admins`\
         \n  •  **Function : **Melihat daftar admin di grup.\
-        \n\n  •  **Syntax :** `.bots`\
-        \n  •  **Function : **Melihat daftar bot dalam grup.\
-        \n\n  •  **Syntax :** `.users` Atau `.users <nama member>`\
-        \n  •  **Function : **Mendapatkan daftar pengguna daam grup.\
     "
     }
 )
