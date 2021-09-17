@@ -30,7 +30,6 @@ from telethon.utils import get_display_name
 
 from userbot import ALIVE_NAME, BOTLOG, BOTLOG_CHATID, CMD_HELP, DEVS
 from userbot.events import register
-from userbot.modules.sql_helper.mute_sql import is_muted, mute, unmute
 from userbot.utils import _format, edit_delete, edit_or_reply
 
 # =================== CONSTANT ===================
@@ -522,9 +521,7 @@ async def gspider(gspdr):
             )
 
 
-@register(
-    outgoing=True, pattern=r"^\.zombies(?: |$)(.*)", groups_only=False
-)
+@register(outgoing=True, pattern=r"^\.zombies(?: |$)(.*)", groups_only=False)
 async def rm_deletedacc(show):
 
     con = show.pattern_match.group(1).lower()
