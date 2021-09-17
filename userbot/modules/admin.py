@@ -2,7 +2,7 @@
 #
 # Licensed under the Raphielscape Public License, Version 1.c (the "License");
 # you may not use this file except in compliance with the License.
-  
+
 import logging
 from asyncio import sleep
 
@@ -30,8 +30,8 @@ from telethon.utils import get_display_name
 
 from userbot import ALIVE_NAME, BOTLOG, BOTLOG_CHATID, CMD_HELP, DEVS
 from userbot.events import register
-from userbot.utils import _format, edit_delete, edit_or_reply,
 from userbot.modules.sql_helper.mute_sql import is_muted, mute, unmute
+from userbot.utils import _format, edit_delete, edit_or_reply
 
 # =================== CONSTANT ===================
 PP_TOO_SMOL = "**Gambar Terlalu Kecil**"
@@ -522,7 +522,9 @@ async def gspider(gspdr):
             )
 
 
-@register(outgoing=True, groups_only=True, pattern=r"^\.zombies(?: |$)(.*)", groups_only=False)
+@register(
+    outgoing=True, groups_only=True, pattern=r"^\.zombies(?: |$)(.*)", groups_only=False
+)
 async def rm_deletedacc(show):
 
     con = show.pattern_match.group(1).lower()
@@ -651,7 +653,9 @@ async def pin(event):
             await event.client.unpin_message(event.chat_id)
         else:
             return await edit_delete(
-                event, "**Reply ke Pesan untuk melepas pin atau gunakan** `.unpin all`", 45
+                event,
+                "**Reply ke Pesan untuk melepas pin atau gunakan** `.unpin all`",
+                45,
             )
     except BadRequestError:
         return await edit_delete(event, NO_PERM, 5)
@@ -665,6 +669,7 @@ async def pin(event):
                 \n**Berhasil melepaskan pin dari Group**\
                 \n👥 **CHAT:** {get_display_name(await event.get_chat())}(`{event.chat_id}`)",
         )
+
 
 @register(outgoing=True, pattern=r"^\.kick(?: |$)(.*)")
 async def kick(usr):
@@ -752,6 +757,7 @@ async def _iundlt(event):
                     f"{msg.old.message}\n**Dikirim oleh** {_format.mentionuser(ruser.first_name ,ruser.id)}",
                     file=msg.old.media,
                 )
+
 
 async def get_user_from_event(
     event, manevent=None, secondgroup=None, nogroup=False, noedits=False
