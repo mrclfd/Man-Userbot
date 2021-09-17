@@ -523,7 +523,7 @@ async def gspider(gspdr):
 
 
 @register(
-    outgoing=True, groups_only=True, pattern=r"^\.zombies(?: |$)(.*)", groups_only=False
+    outgoing=True, pattern=r"^\.zombies(?: |$)(.*)", groups_only=False
 )
 async def rm_deletedacc(show):
 
