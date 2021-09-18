@@ -253,7 +253,7 @@ async def approvepm(apprvpm):
     if BOTLOG:
         await apprvpm.client.send_message(
             BOTLOG_CHATID,
-            "**#APPROVED**\n" + "👤 **User:** + f"[{name0}](tg://user?id={uid})",
+            "**#APPROVED**\n" + "**👤 User:** " + f"[{name0}](tg://user?id={uid})",
         )
 
 
