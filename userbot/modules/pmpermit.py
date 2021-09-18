@@ -92,7 +92,9 @@ async def permitpm(event):
                 COUNT_PM[event.chat_id] = COUNT_PM[event.chat_id] + 1
 
             if COUNT_PM[event.chat_id] > 6:
-                await event.respond("**Maaf Anda Telah Di Blokir Karna Melakukan Spam Chat*")
+                await event.respond(
+                    "**Maaf Anda Telah Di Blokir Karna Melakukan Spam Chat*"
+                )
 
                 try:
                     del COUNT_PM[event.chat_id]
@@ -191,7 +193,9 @@ async def notifon(non_event):
     except AttributeError:
         return await non_event.edit("`Running on Non-SQL mode!`")
     delgvar("NOTIF_OFF")
-    await non_event.edit("**Notifikasi Pesan Pribadi Disetujui, Tidak Lagi Dibisukan!**")
+    await non_event.edit(
+        "**Notifikasi Pesan Pribadi Disetujui, Tidak Lagi Dibisukan!**"
+    )
 
 
 @register(outgoing=True, pattern=r"^\.(?:setuju|ok)\s?(.)?")
@@ -416,8 +420,7 @@ async def add_pmsg(cust_msg):
     if conf.lower() == "get":
         if custom_message is not None:
             await cust_msg.edit(
-                "**Pesan PMPERMIT Yang Sekarang:**"
-                f"\n\n{custom_message}"
+                "**Pesan PMPERMIT Yang Sekarang:**" f"\n\n{custom_message}"
             )
         else:
             await cust_msg.edit(
