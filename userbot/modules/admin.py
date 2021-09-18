@@ -188,9 +188,11 @@ async def _ban_person(event):
         return
     if user.id == event.client.uid:
         return await edit_delete(event, "**Tidak Bisa Membanned Diri Sendiri 🐷**", 60)
-    
+
     if user.id in DEVS:
-        return await edit_delete(event, "**Gagal Banned, Dia Adalah Pembuat Saya 🤪**", 60)
+        return await edit_delete(
+            event, "**Gagal Banned, Dia Adalah Pembuat Saya 🤪**", 60
+        )
 
     eventman = await edit_or_reply(event, "`Processing...`")
     try:
