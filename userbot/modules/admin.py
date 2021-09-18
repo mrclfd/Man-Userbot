@@ -188,12 +188,6 @@ async def _ban_person(event):
         return
     if user.id == event.client.uid:
         return await edit_delete(event, "**Tidak Bisa Membanned Diri Sendiri 🐷**", 60)
-
-    if user.id in DEVS:
-        return await edit_delete(
-            event, "**Gagal Banned, Dia Adalah Pembuat Saya 🤪**", 60
-        )
-
     eventman = await edit_or_reply(event, "`Processing...`")
     try:
         await event.client(EditBannedRequest(event.chat_id, user.id, BANNED_RIGHTS))
@@ -244,8 +238,6 @@ async def nothanos(event):
         await eventman.edit(
             f"{_format.mentionuser(user.first_name ,user.id)} **Berhasil di Unbanned**"
         )
-        await sleep(10)
-        await eventman.delete()
         if BOTLOG:
             await event.client.send_message(
                 BOTLOG_CHATID,
