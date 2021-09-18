@@ -1,6 +1,5 @@
 aiofiles
 aiohttp[speedups]
-aria2p
 async_generator
 asyncurban
 base
