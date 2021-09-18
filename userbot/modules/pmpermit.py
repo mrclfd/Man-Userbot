@@ -286,10 +286,14 @@ async def disapprovepm(disapprvpm):
         try:
             user = await disapprvpm.client.get_entity(inputArgs)
         except BaseException:
-            return await disapprvpm.edit("**Mohon Reply Pesan User Yang ingin ditolak.**")
+            return await disapprvpm.edit(
+                "**Mohon Reply Pesan User Yang ingin ditolak.**"
+            )
 
         if not isinstance(user, User):
-            return await disapprvpm.edit("**Mohon Reply Pesan User Yang ingin ditolak.**")
+            return await disapprvpm.edit(
+                "**Mohon Reply Pesan User Yang ingin ditolak.**"
+            )
 
         aname = user.id
         dissprove(aname)
