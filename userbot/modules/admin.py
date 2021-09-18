@@ -182,98 +182,79 @@ async def demote(event):
 
 
 @register(outgoing=True, pattern=r"^\.ban(?:\s|$)([\s\S]*)")
-async def ban(bon):
-    # Here laying the sanity check
-    chat = await bon.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-
-    # Well
-    if not admin and not creator:
-        return await bon.edit(NO_ADMIN)
-
-    user, reason = await get_user_from_event(bon)
+async def _ban_person(event):
+    user, reason = await get_user_from_event(event)
     if not user:
         return
+    if user.id == event.client.uid:
+        return await edit_delete(event, "**Tidak Bisa Membanned Diri Sendiri 🐷**", 60)
+    
+    if user.id in DEVS:
+        return await edit_delete(event, "**Gagal Banned, Dia Adalah Pembuat Saya 🤪**", 60)
 
-    # Announce that we're going to whack the pest
-    await bon.edit("`Processing Banned...`")
-
+    eventman = await edit_or_reply(event, "`Processing...`")
     try:
-        await bon.client(EditBannedRequest(bon.chat_id, user.id, BANNED_RIGHTS))
+        await event.client(EditBannedRequest(event.chat_id, user.id, BANNED_RIGHTS))
     except BadRequestError:
-        return await bon.edit(NO_PERM)
-    # Helps ban group join spammers more easily
+        return await eventman.edit(NO_PERM)
     try:
-        reply = await bon.get_reply_message()
+        reply = await event.get_reply_message()
         if reply:
             await reply.delete()
     except BadRequestError:
-        return await bon.edit(
-            "`Saya tidak memiliki hak pesan nuking! Tapi tetap saja dia di banned!`"
+        return await eventman.edit(
+            "**Saya Tidak Memiliki Hak Hapus Pesan Grup! Tapi tetap saja dia di banned!**"
         )
-    # Delete message and then tell that the command
-    # is done gracefully
-    # Shout out the ID, so that fedadmins can fban later
     if reason:
-        await bon.edit(
-            r"\\**#Banned_User**//"
-            f"\n\n**First Name:** [{user.first_name}](tg://user?id={user.id})\n"
-            f"**User ID:** `{str(user.id)}`\n"
-            f"**Reason:** `{reason}`"
+        await eventman.edit(
+            f"**Mampus Kau** {_format.mentionuser(user.first_name ,user.id)} **TERBANNED 😡**\n**Karena : **`{reason}`"
         )
     else:
-        await bon.edit(
-            r"\\**#Banned_User**//"
-            f"\n\n**First Name:** [{user.first_name}](tg://user?id={user.id})\n"
-            f"**User ID:** `{str(user.id)}`\n"
-            f"**Action:** `Banned User by {ALIVE_NAME}`"
+        await eventman.edit(
+            f"**Mampus Kau** {_format.mentionuser(user.first_name ,user.id)} **TERBANNED** 😡"
         )
-    # Announce to the logging group if we have banned the person
-    # successfully!
     if BOTLOG:
-        await bon.client.send_message(
-            BOTLOG_CHATID,
-            "#BAN\n"
-            f"PENGGUNA: [{user.first_name}](tg://user?id={user.id})\n"
-            f"GRUP: {bon.chat.title}(`{bon.chat_id}`)",
-        )
+        if reason:
+            await event.client.send_message(
+                BOTLOG_CHATID,
+                f"**#Banned_User**\
+                \n👤 **First Name:** [{user.first_name}](tg://user?id={user.id})\
+                \n👥 **Group:** {get_display_name(await event.get_chat())}(`{event.chat_id}`)\
+                \n🔖 **Reason:** {reason}",
+            )
+        else:
+            await event.client.send_message(
+                BOTLOG_CHATID,
+                f"**#Banned_User**\
+                \n👤 **First Name:** [{user.first_name}](tg://user?id={user.id})\
+                \n👥 **Group:** {get_display_name(await event.get_chat())}(`{event.chat_id}`)",
+            )
 
 
 @register(outgoing=True, pattern=r"^\.unban(?:\s|$)([\s\S]*)")
-async def nothanos(unbon):
-    # Here laying the sanity check
-    chat = await unbon.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-
-    # Well
-    if not admin and not creator:
-        return await unbon.edit(NO_ADMIN)
-
-    # If everything goes well...
-    await unbon.edit("`Processing Unban...`")
-
-    user = await get_user_from_event(unbon)
-    user = user[0]
+async def nothanos(event):
+    user, _ = await get_user_from_event(event)
     if not user:
         return
-
+    eventman = await edit_or_reply(event, "`Unbanning...`")
     try:
-        await unbon.client(EditBannedRequest(unbon.chat_id, user.id, UNBAN_RIGHTS))
-        await unbon.edit("```Unban Berhasil Dilakukan!```")
-        await sleep(3)
-        await unbon.delete()
-
+        await event.client(EditBannedRequest(event.chat_id, user.id, UNBAN_RIGHTS))
+        await eventman.edit(
+            f"{_format.mentionuser(user.first_name ,user.id)} **Berhasil di Unbanned**"
+        )
+        await sleep(10)
+        await eventman.delete()
         if BOTLOG:
-            await unbon.client.send_message(
+            await event.client.send_message(
                 BOTLOG_CHATID,
-                "#UNBAN\n"
-                f"PENGGUNA: [{user.first_name}](tg://user?id={user.id})\n"
-                f"GRUP: {unbon.chat.title}(`{unbon.chat_id}`)",
+                "**#UNBAN**\n"
+                f"👤 **First Name:** [{user.first_name}](tg://user?id={user.id})\n"
+                f"👥 **Group:** {get_display_name(await event.get_chat())}(`{event.chat_id}`)",
             )
     except UserIdInvalidError:
-        await unbon.edit("`Sepertinya Terjadi Kesalahan!`")
+        await eventman.edit("**Maaf Logika Unban Saya Rusak 🥺**")
+    except Exception as e:
+        await eventman.edit(f"**ERROR:** `{e}`")
 
 
 @register(outgoing=True, pattern=r"^\.dmute(?: |$)(.*)")
