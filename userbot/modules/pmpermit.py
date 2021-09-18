@@ -227,7 +227,7 @@ async def approvepm(apprvpm):
             return await apprvpm.edit("**Invalid username/ID.**")
 
         if not isinstance(user, User):
-            return await apprvpm.edit("**This can be done only with users.**")
+            return await apprvpm.edit("**Mohon Reply Pesan User Yang ingin diterima.**")
 
         uid = user.id
         name0 = str(user.first_name)
@@ -235,7 +235,7 @@ async def approvepm(apprvpm):
     else:
         aname = await apprvpm.client.get_entity(apprvpm.chat_id)
         if not isinstance(aname, User):
-            return await apprvpm.edit("**This can be done only with users.**")
+            return await apprvpm.edit("**Mohon Reply Pesan User Yang ingin diterima.**")
         name0 = str(aname.first_name)
         uid = apprvpm.chat_id
 
@@ -252,7 +252,7 @@ async def approvepm(apprvpm):
     except IntegrityError:
         return await apprvpm.edit("**Pesan Anda Sudah Diterima**")
 
-    await apprvpm.edit(f"[{name0}](tg://user?id={uid}) **Pesan Anda Sudah Diterima**")
+    await apprvpm.edit(f"**Menerima Pesan Dari** [{name0}](tg://user?id={uid})")
 
     if BOTLOG:
         await apprvpm.client.send_message(
@@ -286,10 +286,10 @@ async def disapprovepm(disapprvpm):
         try:
             user = await disapprvpm.client.get_entity(inputArgs)
         except BaseException:
-            return await disapprvpm.edit("**Salah username atau User ID.**")
+            return await disapprvpm.edit("**Mohon Reply Pesan User Yang ingin ditolak.**")
 
         if not isinstance(user, User):
-            return await disapprvpm.edit("**This can be done only with users.**")
+            return await disapprvpm.edit("**Mohon Reply Pesan User Yang ingin ditolak.**")
 
         aname = user.id
         dissprove(aname)
@@ -304,13 +304,13 @@ async def disapprovepm(disapprvpm):
         aname = aname.id
 
     await disapprvpm.edit(
-        f"[{name0}](tg://user?id={aname}) **Maaf Pesan Anda Telah Ditolak, Mohon Jangan Melakukan Spam Ke Room Chat!**"
+        f" **Maaf Pesan** [{name0}](tg://user?id={aname}) **Telah Ditolak, Mohon Jangan Melakukan Spam Ke Room Chat!**"
     )
 
     if BOTLOG:
         await disapprvpm.client.send_message(
             BOTLOG_CHATID,
-            f"[{name0}](tg://user?id={aname})" "**Berhasil Ditolak**",
+            f"[{name0}](tg://user?id={aname})" "** Berhasil Ditolak**",
         )
 
 
@@ -451,6 +451,7 @@ CMD_HELP.update(
         \n\n  •  **Syntax :** `.reset pmpermit`\
         \n  •  **Function : **Menghapus pesan PM ke default.\
         \n\n  •  **Pesan Pribadi yang belum diterima saat ini tidak dapat disetel ke teks format kaya bold, underline, link, dll. Pesan akan terkirim normal saja**\
+        \n\n**NOTE: Bila ingin Mengaktifkan PMPERMIT Silahkan Ketik:** `.set var PM_AUTO_BAN True`\
     "
     }
 )
