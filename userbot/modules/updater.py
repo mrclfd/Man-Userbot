@@ -151,7 +151,7 @@ async def upstream(event):
         repo.heads.master.checkout(True)
 
     ac_br = repo.active_branch.name
-    if ac_br != UPSTREAM_REPO_BRANCH:
+    '''if ac_br != UPSTREAM_REPO_BRANCH:
         await event.edit(
             "**[UPDATER]:**\n"
             f"`Looks like you are using your own custom branch ({ac_br}). "
@@ -159,7 +159,7 @@ async def upstream(event):
             "which branch is to be merged. "
             "please checkout to any official branch`"
         )
-        return repo.__del__()
+        return repo.__del__()'''
     try:
         repo.create_remote("upstream", off_repo)
     except BaseException:
