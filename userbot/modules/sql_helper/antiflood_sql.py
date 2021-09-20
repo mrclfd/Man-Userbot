@@ -54,11 +54,13 @@ def set_flood(chat_id, amount):
 def update_flood(chat_id: str, user_id) -> bool:
     if str(chat_id) not in ANTIFLOOD_SQL_.CHAT_FLOOD:
         return
-    curr_user_id, count, limit = ANTIFLOOD_SQL_.CHAT_FLOOD.get(str(chat_id), DEF_OBJ)
+    curr_user_id, count, limit = ANTIFLOOD_SQL_.CHAT_FLOOD.get(
+        str(chat_id), DEF_OBJ)
     if limit == 0:  # no antiflood
         return False
     if user_id != curr_user_id or user_id is None:  # other user
-        ANTIFLOOD_SQL_.CHAT_FLOOD[str(chat_id)] = (user_id, DEF_COUNT + 1, limit)
+        ANTIFLOOD_SQL_.CHAT_FLOOD[str(chat_id)] = (
+            user_id, DEF_COUNT + 1, limit)
         return False
 
     count += 1
@@ -80,8 +82,7 @@ def migrate_chat(old_chat_id, new_chat_id):
         flood = SESSION.query(FloodControl).get(str(old_chat_id))
         if flood:
             ANTIFLOOD_SQL_.CHAT_FLOOD[str(new_chat_id)] = ANTIFLOOD_SQL_.CHAT_FLOOD.get(
-                str(old_chat_id), DEF_OBJ
-            )
+                str(old_chat_id), DEF_OBJ)
             flood.chat_id = str(new_chat_id)
             SESSION.commit()
 
