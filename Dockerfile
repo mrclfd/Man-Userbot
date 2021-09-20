@@ -8,6 +8,6 @@ COPY ./sample_config.env ./config.env* /home/manuserbot/
 
 WORKDIR /home/manuserbot/
 
-RUN pip3 install --use-deprecated=legacy-resolver --use-feature 2020-resolver -r requirements.txt
+RUN pip3 install --use-deprecated=legacy-resolver -r requirements.txt
 
 CMD ["python3", "-m", "userbot"]
