@@ -60,7 +60,6 @@ psutil
 psycopg2
 psycopg2-binary
 pyaztro
-pyaztro
 pybase64
 pyDownload
 PyDrive2
