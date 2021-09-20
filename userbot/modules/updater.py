@@ -23,7 +23,7 @@ from userbot.events import register
 async def gen_chlog(repo, diff):
     d_form = "%d/%m/%y"
     return "".join(
-        f"•[{c.committed_datetime.strftime(d_form)}]: {c.summary} <{c.author}>\n"
+        f"• [{c.committed_datetime.strftime(d_form)}]: {c.summary} <{c.author}>\n"
         for c in repo.iter_commits(diff)
     )
 
@@ -190,7 +190,7 @@ async def upstream(event):
         else:
             await event.edit(changelog_str)
         return await event.respond(
-            "✥ **Perintah Untuk Update Man-Userbot**\n ›`.update now`\n ›`.update deploy`\n\n__Untuk Meng Update Fitur Terbaru Dari Man-Userbot.__"
+            "✥ **Perintah Untuk Update Man-Userbot**\n › `.update now`\n › `.update deploy`\n\n__Untuk Meng Update Fitur Terbaru Dari Man-Userbot.__"
         )
 
     if force_update:
