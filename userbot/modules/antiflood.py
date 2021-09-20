@@ -26,6 +26,7 @@ logging.basicConfig(
 )
 LOGS = logging.getLogger(__name__)
 
+
 async def is_admin(manub, chat_id, userid):
     if not str(chat_id).startswith("-100"):
         return False
