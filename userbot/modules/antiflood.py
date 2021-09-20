@@ -1,30 +1,18 @@
 import asyncio
-import logging
 
 from telethon.tl.functions.channels import EditBannedRequest
-from telethon.tl.types import (
-    ChannelParticipantAdmin,
-    ChannelParticipantCreator,
-    ChatBannedRights,
-)
+from telethon.tl.types import ChatBannedRights, ChannelParticipantAdmin, ChannelParticipantCreator
 
-from userbot import CMD_HELP, LOGS
-from userbot.events import register
 from userbot.modules.sql_helper import antiflood_sql as sql
+from userbot import CMD_HELP
 from userbot.utils import edit_or_reply
+from userbot.events import register
 
 CHAT_FLOOD = sql.__load_flood_settings()
 
 ANTI_FLOOD_WARN_MODE = ChatBannedRights(
     until_date=None, view_messages=None, send_messages=True
 )
-
-logging.basicConfig(
-    format="[%(levelname)s- %(asctime)s]- %(name)s- %(message)s",
-    level=logging.INFO,
-    datefmt="%H:%M:%S",
-)
-LOGS = logging.getLogger(__name__)
 
 
 async def is_admin(manub, chat_id, userid):
@@ -37,9 +25,6 @@ async def is_admin(manub, chat_id, userid):
             chat_participant, (ChannelParticipantCreator, ChannelParticipantAdmin)
         ):
             return True
-    except Exception as e:
-        LOGS.info(str(e))
-        return False
     else:
         return False
 
@@ -69,7 +54,7 @@ async def _(event):
             reply_to=event.message.id,
         )
 
-        await asyncio.sleep(10)
+        await asyncio.sleep(4)
         await no_admin_privilege_message.edit(
             "Ini SPAM tidak berguna kawan. Hentikan ini, dan nikmati obrolannya sobat "
         )
@@ -77,8 +62,8 @@ async def _(event):
         await event.client.send_message(
             entity=event.chat_id,
             message=f"""**Automatic AntiFlooder**
-[User](tg://user?id={event.message.sender_id}) Membanjiri obrolan.
-**Aksi:** Saya membisukan dia 🔇""",
+[Jamet ini](tg://user?id={event.message.sender_id}) Membanjiri obrolan.
+Aksi: Saya membisukan dia 🔇""",
             reply_to=event.message.id,
         )
 
@@ -91,9 +76,7 @@ async def _(event):
     try:
         sql.set_flood(event.chat_id, input_str)
         sql.__load_flood_settings()
-        await event.edit(
-            f"**Antiflood diperbarui menjadi** {input_str} **dalam obrolan saat ini**"
-        )
+        await event.edit(f"**Antiflood diperbarui menjadi** {input_str} **dalam obrolan saat ini**")
     except Exception as e:
         await event.edit(str(e))
 
