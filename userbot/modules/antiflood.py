@@ -8,8 +8,8 @@ from telethon.tl.types import (
     ChatBannedRights,
 )
 
-from userbot import CMD_HELP, LOGS
 import userbot.modules.sql_helper.antiflood_sql as sql
+from userbot import CMD_HELP, LOGS
 from userbot.events import register
 from userbot.utils import edit_or_reply
 
