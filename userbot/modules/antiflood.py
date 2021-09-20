@@ -25,8 +25,6 @@ async def is_admin(manub, chat_id, userid):
             chat_participant, (ChannelParticipantCreator, ChannelParticipantAdmin)
         ):
             return True
-    else:
-        return False
 
 
 @register(incoming=True, groups_only=True)
