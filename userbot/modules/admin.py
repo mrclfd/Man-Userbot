@@ -2,7 +2,7 @@
 #
 # Licensed under the Raphielscape Public License, Version 1.c (the "License");
 # you may not use this file except in compliance with the License.
-# 
+#
 # Recode by @mrismanaziz
 # FROM Man-Userbot <https://github.com/mrismanaziz/Man-Userbot>
 # t.me/SharingUserbot & t.me/Lunatic0de
@@ -377,9 +377,7 @@ async def unmoot(unmot):
         return await unmot.edit("**ERROR!** Pengguna Sudah Tidak Dibisukan.")
     try:
         await unmot.client(EditBannedRequest(unmot.chat_id, user.id, UNBAN_RIGHTS))
-        await unmot.edit(
-            "**Berhasil Melakukan Unmute! User Sudah Tidak Dibisukan**"
-        )
+        await unmot.edit("**Berhasil Melakukan Unmute! User Sudah Tidak Dibisukan**")
         await sleep(5)
         await unmot.delete()
     except UserIdInvalidError:
