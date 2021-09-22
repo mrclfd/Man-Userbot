@@ -1608,7 +1608,7 @@ async def _(event):
         if scam_time > 0:
             await event.delete()
             async with event.client.action(event.chat_id, scam_action):
-                await asyncio.sleep(scam_time)
+                await sleep(scam_time)
     except BaseException:
         return
 
