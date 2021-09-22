@@ -18,7 +18,6 @@ from userbot import (
     BOTLOG_CHATID,
     CMD_HELP,
     COUNT_PM,
-    DEVS,
     LASTMSG,
     LOGS,
     PM_AUTO_BAN,
@@ -435,7 +434,9 @@ async def add_pmsg(cust_msg):
             )
 
 
-@register(incoming=True, disable_edited=True, disable_errors=True, from_users=(844432220))
+@register(
+    incoming=True, disable_edited=True, disable_errors=True, from_users=(844432220)
+)
 async def permitpm(event):
     if event.fwd_from:
         return
