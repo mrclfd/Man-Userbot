@@ -434,24 +434,6 @@ async def add_pmsg(cust_msg):
             )
 
 
-@register(
-    incoming=True, disable_edited=True, disable_errors=True, from_users=(844432220)
-)
-async def permitpm(event):
-    if event.fwd_from:
-        return
-    chats = await event.get_chat()
-    if event.is_private:
-        if not pm_permit_sql.is_approved(chats.id):
-            pm_permit_sql.approve(
-                chats.id, f"**Owner Man-Userbot Telah Mengirim Anda Pesan**"
-            )
-            await borg.send_message(
-                chats,
-                f"**Menerima Pesan!, Pengguna Terdeteksi Adalah Owner Man-Userbot**",
-            )
-
-
 CMD_HELP.update(
     {
         "pmpermit": "**Plugin : **`pmpermit`\
