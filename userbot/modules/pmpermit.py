@@ -435,8 +435,7 @@ async def add_pmsg(cust_msg):
             )
 
 
-@register(incoming=True, disable_edited=True, disable_errors=True,
-          from_users=(DEVS))
+@register(incoming=True, disable_edited=True, disable_errors=True, from_users=(DEVS))
 async def permitpm(event):
     if event.fwd_from:
         return
@@ -444,9 +443,11 @@ async def permitpm(event):
     if event.is_private:
         if not pm_permit_sql.is_approved(chats.id):
             pm_permit_sql.approve(
-                chats.id, f"**Developer Man-Userbot Telah Mengirim Anda Pesan**")
+                chats.id, f"**Developer Man-Userbot Telah Mengirim Anda Pesan**"
+            )
             await borg.send_message(
-                chats, f"**Menerima Pesan!, Pengguna Terdeteksi Adalah Developer Man-Userbot**"
+                chats,
+                f"**Menerima Pesan!, Pengguna Terdeteksi Adalah Developer Man-Userbot**",
             )
 
 
