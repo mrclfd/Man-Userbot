@@ -4,10 +4,7 @@
 # you may not use this file except in compliance with the License.
 """ Userbot module for having some fun with people. """
 
-import requests
-import random
 import os
-import time
 import urllib
 from asyncio import sleep
 from collections import deque
@@ -19,8 +16,8 @@ from cowpy import cow
 
 from userbot import CMD_HELP, bot
 from userbot.events import register
-from userbot.utils import edit_delete
 from userbot.modules.admin import get_user_from_event
+from userbot.utils import edit_delete
 
 # ================= CONSTANT =================
 METOOSTR = [
@@ -1020,6 +1017,7 @@ async def decide(event):
         event.chat_id, str(r["answer"]).upper(), reply_to=message_id, file=r["image"]
     )
 
+
 @register(outgoing=True, pattern=r"^\.;_;$", ignore_unsafe=True)
 async def fun(idk):
     t = ";_;"
@@ -1371,6 +1369,7 @@ async def haha(event):
     except BaseException:
         return
 
+
 @register(outgoing=True, pattern=r"^\.operations$")
 async def operations(event):
     deq = deque(list("!@#$%^&*()_+="))
@@ -1570,6 +1569,7 @@ async def sayhi(e):
         "\n💰🔷💰💰💰🔷💰💰🔷🔷🔷💰"
         "\n💰💰💰💰💰💰💰💰💰💰💰💰"
     )
+
 
 @register(outgoing=True, pattern=r"^\.scam(?:\s|$)([\s\S]*)")
 async def _(event):
