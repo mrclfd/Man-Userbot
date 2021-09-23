@@ -3,7 +3,7 @@ import asyncio
 from telethon import events
 from telethon.tl.functions.users import GetFullUserRequest
 
-from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, bot
 from userbot.events import register
 from userbot.modules.sql_helper import no_log_pms_sql
 from userbot.modules.sql_helper.globals import addgvar, gvarstatus
