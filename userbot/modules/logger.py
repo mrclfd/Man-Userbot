@@ -1,15 +1,15 @@
 import asyncio
 
 from telethon import events
+from telethon.tl.functions.users import GetFullUserRequest
 
-from userbot import BOTLOG, BOTLOG_CHATID, LOGS, CMD_HELP
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS
 from userbot.events import register
 from userbot.modules.sql_helper import no_log_pms_sql
 from userbot.modules.sql_helper.globals import addgvar, gvarstatus
-from userbot.utils import edit_delete, edit_or_reply
+from userbot.utils import edit_delete
 from userbot.utils.tools import media_type
-from telethon.tl.functions.users import GetFullUserRequest
-from telethon.utils import get_display_name
+
 
 class LOG_CHATS:
     def __init__(self):
@@ -83,12 +83,10 @@ async def log_tagged_messages(event):
         LOGS.info(str(e))
     messaget = media_type(event)
     resalt = f"#TAGS \n<b>Group : </b><code>{hmm.title}</code>"
-    target = await event.client(GetFullUserRequest(event.query.user_id))
+    await event.client(GetFullUserRequest(event.query.user_id))
     him_id = event.query.user_id
     if full is not None:
-        resalt += (
-            f"\n<b>From : </b> 👤 [New MSG📨](tg://user?id={him_id})"
-        )
+        resalt += f"\n<b>From : </b> 👤 [New MSG📨](tg://user?id={him_id})"
     if messaget is not None:
         resalt += f"\n<b>Message type : </b><code>{messaget}</code>"
     else:
