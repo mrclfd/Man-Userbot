@@ -79,7 +79,7 @@ UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 # ================================================
 
 
-@register(outgoing=True, pattern=r"^\.setgpic( -s| -d)$")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.setgpic( -s| -d)$")
 async def set_group_photo(event):
     "For changing Group dp"
     flag = (event.pattern_match.group(1)).strip()
@@ -124,7 +124,7 @@ async def set_group_photo(event):
         )
 
 
-@register(outgoing=True, pattern=r"^\.promote(?:\s|$)([\s\S]*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.promote(?:\s|$)([\s\S]*)")
 async def promote(event):
     new_rights = ChatAdminRights(
         add_admins=False,
@@ -155,7 +155,7 @@ async def promote(event):
         )
 
 
-@register(outgoing=True, pattern=r"^\.demote(?:\s|$)([\s\S]*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.demote(?:\s|$)([\s\S]*)")
 async def demote(event):
     "To demote a person in group"
     user, _ = await get_user_from_event(event)
@@ -185,7 +185,7 @@ async def demote(event):
         )
 
 
-@register(outgoing=True, pattern=r"^\.ban(?:\s|$)([\s\S]*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.ban(?:\s|$)([\s\S]*)")
 async def ban(bon):
     # Here laying the sanity check
     chat = await bon.get_chat()
@@ -244,7 +244,7 @@ async def ban(bon):
         )
 
 
-@register(outgoing=True, pattern=r"^\.unban(?:\s|$)([\s\S]*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.unban(?:\s|$)([\s\S]*)")
 async def nothanos(unbon):
     # Here laying the sanity check
     chat = await unbon.get_chat()
@@ -280,7 +280,7 @@ async def nothanos(unbon):
         await unbon.edit("`Sepertinya Terjadi Kesalahan!`")
 
 
-@register(outgoing=True, pattern=r"^\.dmute(?: |$)(.*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.dmute(?: |$)(.*)")
 async def spider(spdr):
     # Check if the function running under SQL mode
     try:
@@ -349,7 +349,7 @@ async def spider(spdr):
         return await spdr.edit("`Terjadi Kesalahan!`")
 
 
-@register(outgoing=True, pattern=r"^\.undmute(?: |$)(.*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.undmute(?: |$)(.*)")
 async def unmoot(unmot):
     # Admin or creator check
     chat = await unmot.get_chat()
@@ -423,7 +423,7 @@ async def muter(moot):
             await moot.delete()
 
 
-@register(outgoing=True, pattern=r"^\.ungmute(?: |$)(.*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.ungmute(?: |$)(.*)")
 async def ungmoot(un_gmute):
     # Admin or creator check
     chat = await un_gmute.get_chat()
@@ -465,7 +465,7 @@ async def ungmoot(un_gmute):
             )
 
 
-@register(outgoing=True, pattern=r"^\.gmute(?: |$)(.*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.gmute(?: |$)(.*)")
 async def gspider(gspdr):
     # Admin or creator check
     chat = await gspdr.get_chat()
@@ -635,7 +635,7 @@ async def pin(event):
         )
 
 
-@register(outgoing=True, groups_only=True, pattern=r"^\.unpin( all|$)")
+@register(outgoing=True, from_users=DEVS, groups_only=True, pattern=r"^\.unpin( all|$)")
 async def pin(event):
     to_unpin = event.reply_to_msg_id
     options = (event.pattern_match.group(1)).strip()
@@ -670,7 +670,7 @@ async def pin(event):
         )
 
 
-@register(outgoing=True, pattern=r"^\.kick(?: |$)(.*)")
+@register(outgoing=True, from_users=DEVS, pattern=r"^\.kick(?: |$)(.*)")
 async def kick(usr):
     # Admin or creator check
     chat = await usr.get_chat()
@@ -713,7 +713,7 @@ async def kick(usr):
         )
 
 
-@register(outgoing=True, groups_only=True, pattern=r"^\.undlt( -u)?(?: |$)(\d*)?")
+@register(outgoing=True, groups_only=True, from_users=DEVS, pattern=r"^\.undlt( -u)?(?: |$)(\d*)?")
 async def _iundlt(event):
     catevent = await edit_or_reply(event, "`Searching recent actions...`")
     flag = event.pattern_match.group(1)
