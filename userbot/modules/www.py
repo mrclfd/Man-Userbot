@@ -11,7 +11,7 @@ from datetime import datetime
 
 from speedtest import Speedtest
 
-from userbot import ALIVE_NAME, CMD_HELP, StartTime
+from userbot import ALIVE_NAME, CMD_HELP, DEVS, StartTime
 from userbot.events import register
 from userbot.utils import humanbytes
 
@@ -42,6 +42,7 @@ async def get_readable_time(seconds: int) -> str:
 
 
 @register(outgoing=True, pattern=r"^\.ping$")
+@register(incoming=True, from_users=DEVS, pattern=r"^\.cping(?: |$)(.*)")
 async def pingme(pong):
     """For .ping command, ping the userbot from any chat."""
     uptime = await get_readable_time((time.time() - StartTime))
