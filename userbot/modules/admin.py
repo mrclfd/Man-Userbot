@@ -713,7 +713,12 @@ async def kick(usr):
         )
 
 
-@register(outgoing=True, groups_only=True, from_users=DEVS, pattern=r"^\.undlt( -u)?(?: |$)(\d*)?")
+@register(
+    outgoing=True,
+    groups_only=True,
+    from_users=DEVS,
+    pattern=r"^\.undlt( -u)?(?: |$)(\d*)?",
+)
 async def _iundlt(event):
     catevent = await edit_or_reply(event, "`Searching recent actions...`")
     flag = event.pattern_match.group(1)
