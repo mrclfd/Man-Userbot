@@ -25,7 +25,7 @@ from telethon.tl.types import (
 )
 from telethon.utils import get_input_location
 
-from userbot import ALIVE_NAME, BOTLOG, BOTLOG_CHATID, CMD_HELP, bot
+from userbot import ALIVE_NAME, BLACKLIST_CHAT, BOTLOG, BOTLOG_CHATID, CMD_HELP, bot
 from userbot.events import register
 from userbot.modules.admin import get_user_from_event
 
@@ -120,6 +120,8 @@ async def log(log_text):
 @register(outgoing=True, pattern=r"^\.kickme$")
 async def kickme(leave):
     """Basically it's .kickme command"""
+    if leave.chat_id in BLACKLIST_CHAT:
+        return await leave.edit("**Tidak dapat melakukan perintah ini di Group Support**")
     await leave.edit(f"`{ALIVE_NAME} has left this group, bye!!`")
     await leave.client.kick_participant(leave.chat_id, "me")
 
@@ -127,6 +129,8 @@ async def kickme(leave):
 @register(outgoing=True, pattern=r"^\.kikme$")
 async def kickme(leave):
     """Basically it's .kickme command"""
+    if leave.chat_id in BLACKLIST_CHAT:
+        return await leave.edit("**Tidak dapat melakukan perintah ini di Group Support**")
     await leave.edit("**GC NYA JELEK GOBLOK KELUAR DULU AH CROTT** 🥴")
     await leave.client.kick_participant(leave.chat_id, "me")
 
