@@ -1,7 +1,6 @@
 import asyncio
 
 from telethon import events
-from telethon.tl.functions.users import GetFullUserRequest
 
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, bot
 from userbot.events import register
@@ -12,6 +11,7 @@ from userbot.utils.logger import logging
 from userbot.utils.tools import media_type
 
 LOGS = logging.getLogger(__name__)
+
 
 class LOG_CHATS:
     def __init__(self):
