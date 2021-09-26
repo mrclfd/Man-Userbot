@@ -69,7 +69,7 @@ async def monito_p_m_s(event):
 async def log_tagged_messages(event):
     hmm = await event.get_chat()
 
-    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "true":
+    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "false":
         return
     if (
         (no_log_pms_sql.is_approved(hmm.id))
