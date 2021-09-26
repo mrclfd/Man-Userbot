@@ -69,7 +69,7 @@ async def monito_p_m_s(event):
 async def log_tagged_messages(event):
     hmm = await event.get_chat()
 
-    if gvarstatus("GRPLOG") and gvarstatus("GRPLOG") == "true":
+    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "true":
         return
     if (
         (no_log_pms_sql.is_approved(hmm.id))
@@ -113,7 +113,7 @@ async def log(log_text):
         else:
             await log_text.edit("**Apa yang harus saya simpan?**")
             return
-        await log_text.edit("**Logged Successfully**")
+        await log_text.edit("**Berhasil disimpan di Grup Log**")
     else:
         await log_text.edit("**Module ini membutuhkan LOGGER untuk diaktifkan!**")
     await asyncio.sleep(2)
@@ -126,7 +126,7 @@ async def set_no_log_p_m(event):
         chat = await event.get_chat()
         if no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.disapprove(chat.id)
-            await edit_delete(event, "**LOG Chat dari Grup ini Telah Diaktifkan**", 5)
+            await edit_delete(event, "**LOG Chat dari Grup ini Telah Diaktifkan**", 15)
 
 
 @register(outgoing=True, pattern=r"^\.nolog$")
@@ -135,7 +135,7 @@ async def set_no_log_p_m(event):
         chat = await event.get_chat()
         if not no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.approve(chat.id)
-            await edit_delete(event, "**LOG Chat dari Grup ini Telah Dimatikan**", 5)
+            await edit_delete(event, "**LOG Chat dari Grup ini Telah Dimatikan**", 15)
 
 
 @register(outgoing=True, pattern=r"^\.pmlog (on|off)$")
@@ -181,18 +181,18 @@ async def set_grplog(event):
         h_type = False
     elif input_str == "on":
         h_type = True
-    if gvarstatus("GRPLOG") and gvarstatus("GRPLOG") == "true":
-        GRPLOG = False
+    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "true":
+        GRUPLOG = False
     else:
-        GRPLOG = True
-    if GRPLOG:
+        GRUPLOG = True
+    if GRUPLOG:
         if h_type:
             await event.edit("**Group Log Sudah Diaktifkan**")
         else:
-            addgvar("GRPLOG", h_type)
+            addgvar("GRUPLOG", h_type)
             await event.edit("**Group Log Berhasil Dimatikan**")
     elif h_type:
-        addgvar("GRPLOG", h_type)
+        addgvar("GRUPLOG", h_type)
         await event.edit("**Group Log Berhasil Diaktifkan**")
     else:
         await event.edit("**Group Log Sudah Dimatikan**")
