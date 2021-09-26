@@ -6,8 +6,9 @@
 # <https://www.github.com/TeamUltroid/Ultroid/blob/main/LICENSE/>.
 #
 # Ported by Koala @manusiarakitann
-# @LordUserbot_Group
-# @sharinguserbot
+# Recode by @mrismanaziz
+# FROM Man-Userbot <https://github.com/mrismanaziz/Man-Userbot>
+# t.me/SharingUserbot & t.me/Lunatic0de
 
 from userbot import CMD_HELP
 from userbot.events import register
@@ -61,15 +62,15 @@ async def gucast(event):
             except BaseException:
                 er += 1
     await kk.edit(
-        f"**Berhasil Mengirim Pesan Ke** {done} **chats**, Gagal Mengirim Pesan Ke** {er} **chats**"
+        f"**Berhasil Mengirim Pesan Ke** `{done}` **chats, Gagal Mengirim Pesan Ke** `{er}` **chats**"
     )
 
 
 CMD_HELP.update(
     {
         "gcast": "**Plugin : **`gcast`\
-        \n\n  •  **Syntax :** `.gcast` <text/reply media>`\
-        \n  •  **Function : **Mengirim Global Broadcast pesan ke Seluruh Grup yang kamu masuk. (Bisa Mengirim Foto/Sticker)\
+        \n\n  •  **Syntax :** `.gcast` <text/reply media>\
+        \n  •  **Function : **Mengirim Global Broadcast pesan ke Seluruh Grup yang kamu masuk. (Bisa Mengirim Media/Sticker)\
     "
     }
 )
@@ -78,8 +79,8 @@ CMD_HELP.update(
 CMD_HELP.update(
     {
         "gucast": "**Plugin : **`gucast`\
-        \n\n  •  **Syntax :** `.gucast` <text>`\
-        \n  •  **Function : **Mengirim  Global Broadcast pesan ke Seluruh Private Massage / PC yang masuk.\
+        \n\n  •  **Syntax :** `.gucast` <text/reply media>\
+        \n  •  **Function : **Mengirim Global Broadcast pesan ke Seluruh Private Massage / PC yang masuk. (Bisa Mengirim Media/Sticker)\
     "
     }
 )
