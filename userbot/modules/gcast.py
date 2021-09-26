@@ -21,7 +21,7 @@ async def gcast(event):
     elif event.is_reply:
         msg = await event.get_reply_message()
     else:
-        await event.edit("`Berikan Sebuah Pesan Atau Reply`")
+        await event.edit("**Berikan Sebuah Pesan atau Reply**")
         return
     kk = await event.edit("`Globally Broadcasting Msg...`")
     er = 0
@@ -42,10 +42,13 @@ async def gcast(event):
 @register(outgoing=True, pattern=r"^\.gucast(?: |$)(.*)")
 async def gucast(event):
     xx = event.pattern_match.group(1)
-    if not xx:
-        return await event.edit("`Berikan Sebuah Pesan`")
-    tt = event.text
-    msg = tt[7:]
+    if xx:
+        msg = xx
+    elif event.is_reply:
+        msg = await event.get_reply_message()
+    else:
+        await event.edit("**Berikan Sebuah Pesan atau Reply**")
+        return
     kk = await event.edit("`Globally Broadcasting Msg...`")
     er = 0
     done = 0
@@ -65,8 +68,8 @@ async def gucast(event):
 CMD_HELP.update(
     {
         "gcast": "**Plugin : **`gcast`\
-        \n\n  •  **Syntax :** `.gcast` <text>`\
-        \n  •  **Function : **Mengirim  Global Broadcast pesan ke Seluruh Grup yang kamu masuk.\
+        \n\n  •  **Syntax :** `.gcast` <text/reply media>`\
+        \n  •  **Function : **Mengirim Global Broadcast pesan ke Seluruh Grup yang kamu masuk. (Bisa Mengirim Foto/Sticker)\
     "
     }
 )
