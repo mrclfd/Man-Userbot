@@ -39,19 +39,19 @@ async def monito_p_m_s(event):
                     if LOG_CHATS_.COUNT > 1:
                         await LOG_CHATS_.NEWPM.edit(
                             LOG_CHATS_.NEWPM.text.replace(
-                                "new message", f"{LOG_CHATS_.COUNT} messages"
+                                "**💌 #NEW_MESSAGE**", f" • `{LOG_CHATS_.COUNT}` **Pesan**"
                             )
                         )
                     else:
                         await LOG_CHATS_.NEWPM.edit(
                             LOG_CHATS_.NEWPM.text.replace(
-                                "new message", f"{LOG_CHATS_.COUNT} message"
+                                "**💌 #NEW_MESSAGE**", f" • `{LOG_CHATS_.COUNT}` **Pesan**"
                             )
                         )
                     LOG_CHATS_.COUNT = 0
                 LOG_CHATS_.NEWPM = await event.client.send_message(
                     BOTLOG_CHATID,
-                    f"👤{_format.mentionuser(sender.first_name , sender.id)} has sent a new message \nId : `{chat.id}`",
+                    f"**💌 #PESAN_BARU**\n** • Dari : **{_format.mentionuser(sender.first_name , sender.id)}\n** • User ID:** `{chat.id}`",
                 )
             try:
                 if event.message:
@@ -67,7 +67,7 @@ async def monito_p_m_s(event):
 async def log_tagged_messages(event):
     hmm = await event.get_chat()
 
-    if gvarstatus("GRPLOG") and gvarstatus("GRPLOG") == "false":
+    if gvarstatus("GRPLOG") and gvarstatus("GRPLOG") == "true":
         return
     if (
         (no_log_pms_sql.is_approved(hmm.id))
@@ -81,16 +81,16 @@ async def log_tagged_messages(event):
     except Exception as e:
         LOGS.info(str(e))
     messaget = media_type(event)
-    resalt = f"#TAGS \n<b>Group : </b><code>{hmm.title}</code>"
+    resalt = f"<b>📨 #TAGS #MESSAGE</b>\n<b> • Dari : </b>{_format.htmlmentionuser(full.first_name , full.id)}"
     if full is not None:
         resalt += (
-            f"\n<b>From : </b> 👤{_format.htmlmentionuser(full.first_name , full.id)}"
+            f"\n<b> • Grup : </b><code>{hmm.title}</code>"
         )
     if messaget is not None:
-        resalt += f"\n<b>Message type : </b><code>{messaget}</code>"
+        resalt += f"\n<b> • Jenis Pesan : </b><code>{messaget}</code>"
     else:
-        resalt += f"\n<b>Message : </b>{event.message.message}"
-    resalt += f"\n<b>Message link: </b><a href = 'https://t.me/c/{hmm.id}/{event.message.id}'> link</a>"
+        resalt += f"\n<b> • 👀 </b><a href = 'https://t.me/c/{hmm.id}/{event.message.id}'>Lihat Pesan</a>"
+    resalt += f"\n<b> • Message : </b>{event.message.message}"
     if not event.is_private:
         await event.client.send_message(
             BOTLOG_CHATID,
@@ -107,15 +107,15 @@ async def log(log_text):
             reply_msg = await log_text.get_reply_message()
             await reply_msg.forward_to(BOTLOG_CHATID)
         elif log_text.pattern_match.group(1):
-            user = f"#LOG / Chat ID: {log_text.chat_id}\n\n"
+            user = f"**#LOG / Chat ID:** {log_text.chat_id}\n\n"
             textx = user + log_text.pattern_match.group(1)
             await log_text.client.send_message(BOTLOG_CHATID, textx)
         else:
-            await log_text.edit("`What am I supposed to log?`")
+            await log_text.edit("**Apa yang harus saya simpan?**")
             return
-        await log_text.edit("`Logged Successfully`")
+        await log_text.edit("**Logged Successfully**")
     else:
-        await log_text.edit("`This feature requires Logging to be enabled!`")
+        await log_text.edit("**Module ini membutuhkan LOGGER untuk diaktifkan!**")
     await asyncio.sleep(2)
     await log_text.delete()
 
@@ -127,7 +127,7 @@ async def set_no_log_p_m(event):
         if no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.disapprove(chat.id)
             await edit_delete(
-                event, "`logging of messages from this group has been started`", 5
+                event, "**LOG Chat dari Grup ini Telah Diaktifkan**", 5
             )
 
 
@@ -138,7 +138,7 @@ async def set_no_log_p_m(event):
         if not no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.approve(chat.id)
             await edit_delete(
-                event, "`Logging of messages from this chat has been stopped`", 5
+                event, "**LOG Chat dari Grup ini Telah Dimatikan**", 5
             )
 
 
@@ -147,8 +147,8 @@ async def set_pmlog(event):
     if BOTLOG_CHATID == -100:
         return await edit_delete(
             event,
-            "__Untuk memfungsikan ini, Anda perlu mengatur BOTLOG_CHATID di config vars__",
-            10,
+            "**Untuk Menggunakan Module ini, Anda Harus Mengatur** `BOTLOG_CHATID` **di Config Vars**",
+            30,
         )
     input_str = event.pattern_match.group(1)
     if input_str == "off":
@@ -161,15 +161,15 @@ async def set_pmlog(event):
         PMLOG = True
     if PMLOG:
         if h_type:
-            await event.edit("`Pm logging is already enabled`")
+            await event.edit("**PM LOG Sudah Diaktifkan**")
         else:
             addgvar("PMLOG", h_type)
-            await event.edit("`Pm logging is disabled`")
+            await event.edit("**PM LOG Berhasil Dimatikan**")
     elif h_type:
         addgvar("PMLOG", h_type)
-        await event.edit("`Pm logging is enabled`")
+        await event.edit("**PM LOG Berhasil Diaktifkan**")
     else:
-        await event.edit("`Pm logging is already disabled`")
+        await event.edit("**PM LOG Sudah Dimatikan`")
 
 
 @register(outgoing=True, pattern=r"^\.gruplog (on|off)$")
@@ -177,43 +177,43 @@ async def set_grplog(event):
     if BOTLOG_CHATID == -100:
         return await edit_delete(
             event,
-            "__Untuk memfungsikan ini, Anda perlu mengatur BOTLOG_CHATID di config vars__",
-            10,
+            "**Untuk Menggunakan Module ini, Anda Harus Mengatur** `BOTLOG_CHATID` **di Config Vars**",
+            30,
         )
     input_str = event.pattern_match.group(1)
     if input_str == "off":
         h_type = False
     elif input_str == "on":
         h_type = True
-    if gvarstatus("GRPLOG") and gvarstatus("GRPLOG") == "false":
+    if gvarstatus("GRPLOG") and gvarstatus("GRPLOG") == "true":
         GRPLOG = False
     else:
         GRPLOG = True
     if GRPLOG:
         if h_type:
-            await event.edit("`Group logging is already enabled`")
+            await event.edit("**Group Log Sudah Diaktifkan**")
         else:
             addgvar("GRPLOG", h_type)
-            await event.edit("`Group logging is disabled`")
+            await event.edit("**Group Log Berhasil Dimatikan**")
     elif h_type:
         addgvar("GRPLOG", h_type)
-        await event.edit("`Group logging is enabled`")
+        await event.edit("**Group Log Berhasil Diaktifkan**")
     else:
-        await event.edit("`Group logging is already disabled`")
+        await event.edit("**Group Log Sudah Dimatikan**")
 
 
 CMD_HELP.update(
     {
-        "logchats": "**Plugin : **`logchats`\
+        "log": "**Plugin : **`log`\
         \n\n  •  **Syntax :** `.save`\
-        \n  •  **Function : **__Saves tagged message in private group .__\
+        \n  •  **Function : **__Untuk Menyimpan pesan yang ditandai ke grup pribadi.__\
         \n\n  •  **Syntax :** `.log`\
-        \n  •  **Function : **__By default will log all private chat messages if you use .nolog and want to log again then you need to use this__\
+        \n  •  **Function : **__Untuk mengaktifkan Log Chat dari obrolan/grup itu.__\
         \n\n  •  **Syntax :** `.nolog`\
-        \n  •  **Function : **__Stops logging from a private chat or group where you used__\
+        \n  •  **Function : **__Untuk menonaktifkan Log Chat dari obrolan/grup itu.__\
         \n\n  •  **Syntax :** `.pmlog on/off`\
-        \n  •  **Function : **__To turn on and turn off personal messages logging__\
-        \n\n  •  **Syntax :** `.nolog`\
-        \n  •  **Function : **__To turn on and turn off Group messages(tagged) logging__"
+        \n  •  **Function : **__Untuk mengaktifkan atau menonaktifkan pencatatan pesan pribadi__\
+        \n\n  •  **Syntax :** `.gruplog on/off`\
+        \n  •  **Function : **__Untuk mengaktifkan atau menonaktifkan tag grup, yang akan masuk ke grup pmlogger.__"
     }
 )
