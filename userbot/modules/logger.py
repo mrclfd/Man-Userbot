@@ -53,7 +53,7 @@ async def monito_p_m_s(event):
                     LOG_CHATS_.COUNT = 0
                 LOG_CHATS_.NEWPM = await event.client.send_message(
                     BOTLOG_CHATID,
-                    f"**💌 #PESAN_BARU**\n** • Dari : **{_format.mentionuser(sender.first_name , sender.id)}\n** • User ID:** `{chat.id}`",
+                    f"**💌 #MENERUSKAN #PESAN_BARU**\n** • Dari : **{_format.mentionuser(sender.first_name , sender.id)}\n** • User ID:** `{chat.id}`",
                 )
             try:
                 if event.message:
@@ -126,7 +126,7 @@ async def set_no_log_p_m(event):
         chat = await event.get_chat()
         if no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.disapprove(chat.id)
-            await edit_delete(event, "**LOG Chat dari Grup ini Telah Diaktifkan**", 15)
+            await edit_delete(event, "**LOG Chat dari Grup ini Berhasil Diaktifkan**", 15)
 
 
 @register(outgoing=True, pattern=r"^\.nolog$")
@@ -135,7 +135,7 @@ async def set_no_log_p_m(event):
         chat = await event.get_chat()
         if not no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.approve(chat.id)
-            await edit_delete(event, "**LOG Chat dari Grup ini Telah Dimatikan**", 15)
+            await edit_delete(event, "**LOG Chat dari Grup ini Berhasil Dimatikan**", 15)
 
 
 @register(outgoing=True, pattern=r"^\.pmlog (on|off)$")
@@ -169,7 +169,7 @@ async def set_pmlog(event):
 
 
 @register(outgoing=True, pattern=r"^\.gruplog (on|off)$")
-async def set_grplog(event):
+async def set_gruplog(event):
     if BOTLOG_CHATID == -100:
         return await edit_delete(
             event,
@@ -181,7 +181,7 @@ async def set_grplog(event):
         h_type = False
     elif input_str == "on":
         h_type = True
-    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "true":
+    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "false":
         GRUPLOG = False
     else:
         GRUPLOG = True
