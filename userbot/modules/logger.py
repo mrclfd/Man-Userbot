@@ -7,9 +7,11 @@ from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, bot
 from userbot.events import register
 from userbot.modules.sql_helper import no_log_pms_sql
 from userbot.modules.sql_helper.globals import addgvar, gvarstatus
-from userbot.utils import edit_delete
+from userbot.utils import _format, edit_delete
+from userbot.utils.logger import logging
 from userbot.utils.tools import media_type
 
+LOGS = logging.getLogger(__name__)
 
 class LOG_CHATS:
     def __init__(self):
@@ -23,7 +25,7 @@ LOG_CHATS_ = LOG_CHATS()
 
 @bot.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def monito_p_m_s(event):
-    if not BOTLOG_CHATID:
+    if BOTLOG_CHATID == -100:
         return
     if gvarstatus("PMLOG") and gvarstatus("PMLOG") == "false":
         return
@@ -47,10 +49,9 @@ async def monito_p_m_s(event):
                             )
                         )
                     LOG_CHATS_.COUNT = 0
-                    him_id = event.query.user_id
                 LOG_CHATS_.NEWPM = await event.client.send_message(
                     BOTLOG_CHATID,
-                    f"👤 [New Pm](tg://user?id={him_id}) has sent a new message \nId : `{chat.id}`",
+                    f"👤{_format.mentionuser(sender.first_name , sender.id)} has sent a new message \nId : `{chat.id}`",
                 )
             try:
                 if event.message:
@@ -70,7 +71,7 @@ async def log_tagged_messages(event):
         return
     if (
         (no_log_pms_sql.is_approved(hmm.id))
-        or (not BOTLOG_CHATID)
+        or (BOTLOG_CHATID == -100)
         or (await event.get_sender() and (await event.get_sender()).bot)
     ):
         return
@@ -81,10 +82,10 @@ async def log_tagged_messages(event):
         LOGS.info(str(e))
     messaget = media_type(event)
     resalt = f"#TAGS \n<b>Group : </b><code>{hmm.title}</code>"
-    await event.client(GetFullUserRequest(event.query.user_id))
-    him_id = event.query.user_id
     if full is not None:
-        resalt += f"\n<b>From : </b> 👤 [New MSG📨](tg://user?id={him_id})"
+        resalt += (
+            f"\n<b>From : </b> 👤{_format.htmlmentionuser(full.first_name , full.id)}"
+        )
     if messaget is not None:
         resalt += f"\n<b>Message type : </b><code>{messaget}</code>"
     else:
@@ -121,7 +122,7 @@ async def log(log_text):
 
 @register(outgoing=True, pattern=r"^\.log$")
 async def set_no_log_p_m(event):
-    if BOTLOG_CHATID is not None:
+    if BOTLOG_CHATID != -100:
         chat = await event.get_chat()
         if no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.disapprove(chat.id)
@@ -132,7 +133,7 @@ async def set_no_log_p_m(event):
 
 @register(outgoing=True, pattern=r"^\.nolog$")
 async def set_no_log_p_m(event):
-    if BOTLOG_CHATID is not None:
+    if BOTLOG_CHATID != -100:
         chat = await event.get_chat()
         if not no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.approve(chat.id)
@@ -143,8 +144,12 @@ async def set_no_log_p_m(event):
 
 @register(outgoing=True, pattern=r"^\.pmlog (on|off)$")
 async def set_pmlog(event):
-    if event.fwd_from:
-        return
+    if BOTLOG_CHATID == -100:
+        return await edit_delete(
+            event,
+            "__Untuk memfungsikan ini, Anda perlu mengatur BOTLOG_CHATID di config vars__",
+            10,
+        )
     input_str = event.pattern_match.group(1)
     if input_str == "off":
         h_type = False
@@ -160,18 +165,21 @@ async def set_pmlog(event):
         else:
             addgvar("PMLOG", h_type)
             await event.edit("`Pm logging is disabled`")
+    elif h_type:
+        addgvar("PMLOG", h_type)
+        await event.edit("`Pm logging is enabled`")
     else:
-        if h_type:
-            addgvar("PMLOG", h_type)
-            await event.edit("`Pm logging is enabled`")
-        else:
-            await event.edit("`Pm logging is already disabled`")
+        await event.edit("`Pm logging is already disabled`")
 
 
 @register(outgoing=True, pattern=r"^\.gruplog (on|off)$")
 async def set_grplog(event):
-    if event.fwd_from:
-        return
+    if BOTLOG_CHATID == -100:
+        return await edit_delete(
+            event,
+            "__Untuk memfungsikan ini, Anda perlu mengatur BOTLOG_CHATID di config vars__",
+            10,
+        )
     input_str = event.pattern_match.group(1)
     if input_str == "off":
         h_type = False
@@ -187,12 +195,11 @@ async def set_grplog(event):
         else:
             addgvar("GRPLOG", h_type)
             await event.edit("`Group logging is disabled`")
+    elif h_type:
+        addgvar("GRPLOG", h_type)
+        await event.edit("`Group logging is enabled`")
     else:
-        if h_type:
-            addgvar("GRPLOG", h_type)
-            await event.edit("`Group logging is enabled`")
-        else:
-            await event.edit("`Group logging is already disabled`")
+        await event.edit("`Group logging is already disabled`")
 
 
 CMD_HELP.update(
