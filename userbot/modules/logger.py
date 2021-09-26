@@ -126,7 +126,9 @@ async def set_no_log_p_m(event):
         chat = await event.get_chat()
         if no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.disapprove(chat.id)
-            await edit_delete(event, "**LOG Chat dari Grup ini Berhasil Diaktifkan**", 15)
+            await edit_delete(
+                event, "**LOG Chat dari Grup ini Berhasil Diaktifkan**", 15
+            )
 
 
 @register(outgoing=True, pattern=r"^\.nolog$")
@@ -135,7 +137,9 @@ async def set_no_log_p_m(event):
         chat = await event.get_chat()
         if not no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.approve(chat.id)
-            await edit_delete(event, "**LOG Chat dari Grup ini Berhasil Dimatikan**", 15)
+            await edit_delete(
+                event, "**LOG Chat dari Grup ini Berhasil Dimatikan**", 15
+            )
 
 
 @register(outgoing=True, pattern=r"^\.pmlog (on|off)$")
