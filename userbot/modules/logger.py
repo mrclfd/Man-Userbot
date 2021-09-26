@@ -39,13 +39,15 @@ async def monito_p_m_s(event):
                     if LOG_CHATS_.COUNT > 1:
                         await LOG_CHATS_.NEWPM.edit(
                             LOG_CHATS_.NEWPM.text.replace(
-                                "**💌 #NEW_MESSAGE**", f" • `{LOG_CHATS_.COUNT}` **Pesan**"
+                                "**💌 #NEW_MESSAGE**",
+                                f" • `{LOG_CHATS_.COUNT}` **Pesan**",
                             )
                         )
                     else:
                         await LOG_CHATS_.NEWPM.edit(
                             LOG_CHATS_.NEWPM.text.replace(
-                                "**💌 #NEW_MESSAGE**", f" • `{LOG_CHATS_.COUNT}` **Pesan**"
+                                "**💌 #NEW_MESSAGE**",
+                                f" • `{LOG_CHATS_.COUNT}` **Pesan**",
                             )
                         )
                     LOG_CHATS_.COUNT = 0
@@ -83,9 +85,7 @@ async def log_tagged_messages(event):
     messaget = media_type(event)
     resalt = f"<b>📨 #TAGS #MESSAGE</b>\n<b> • Dari : </b>{_format.htmlmentionuser(full.first_name , full.id)}"
     if full is not None:
-        resalt += (
-            f"\n<b> • Grup : </b><code>{hmm.title}</code>"
-        )
+        resalt += f"\n<b> • Grup : </b><code>{hmm.title}</code>"
     if messaget is not None:
         resalt += f"\n<b> • Jenis Pesan : </b><code>{messaget}</code>"
     else:
@@ -126,9 +126,7 @@ async def set_no_log_p_m(event):
         chat = await event.get_chat()
         if no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.disapprove(chat.id)
-            await edit_delete(
-                event, "**LOG Chat dari Grup ini Telah Diaktifkan**", 5
-            )
+            await edit_delete(event, "**LOG Chat dari Grup ini Telah Diaktifkan**", 5)
 
 
 @register(outgoing=True, pattern=r"^\.nolog$")
@@ -137,9 +135,7 @@ async def set_no_log_p_m(event):
         chat = await event.get_chat()
         if not no_log_pms_sql.is_approved(chat.id):
             no_log_pms_sql.approve(chat.id)
-            await edit_delete(
-                event, "**LOG Chat dari Grup ini Telah Dimatikan**", 5
-            )
+            await edit_delete(event, "**LOG Chat dari Grup ini Telah Dimatikan**", 5)
 
 
 @register(outgoing=True, pattern=r"^\.pmlog (on|off)$")
