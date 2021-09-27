@@ -101,7 +101,7 @@ async def log_tagged_messages(event):
             BOTLOG_CHATID,
             resalt,
             parse_mode="html",
-            link_preview=False,
+            link_preview=True,
         )
 
 
