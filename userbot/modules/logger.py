@@ -53,7 +53,7 @@ async def monito_p_m_s(event):
                     LOG_CHATS_.COUNT = 0
                 LOG_CHATS_.NEWPM = await event.client.send_message(
                     BOTLOG_CHATID,
-                    f"**💌 #MENERUSKAN #PESAN_BARU**\n** • Dari : **{_format.mentionuser(sender.first_name , sender.id)}\n** • User ID:** `{chat.id}`",
+                    f"**💌 #MENERUSKAN #PESAN_BARU**\n** • Dari : **{_format.mentionuser(sender.first_name)}\n** • User ID:** `{chat.id}`",
                 )
             try:
                 if event.message:
@@ -83,7 +83,7 @@ async def log_tagged_messages(event):
     except Exception as e:
         LOGS.info(str(e))
     messaget = media_type(event)
-    resalt = f"<b>📨 #TAGS #MESSAGE</b>\n<b> • Dari : </b>{_format.htmlmentionuser(full.first_name , full.id)}"
+    resalt = f"<b>📨 #TAGS #MESSAGE</b>\n<b> • Dari : </b>{_format.htmlmentionuser(full.first_name)}"
     if full is not None:
         resalt += f"\n<b> • Grup : </b><code>{hmm.title}</code>"
     if messaget is not None:
@@ -185,7 +185,7 @@ async def set_gruplog(event):
         h_type = False
     elif input_str == "on":
         h_type = True
-    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "true":
+    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "false":
         GRUPLOG = False
     else:
         GRUPLOG = True
