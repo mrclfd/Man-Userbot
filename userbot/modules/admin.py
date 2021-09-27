@@ -284,8 +284,8 @@ async def nothanos(unbon):
         await unbon.edit("`Sepertinya Terjadi Kesalahan!`")
 
 
-@register(outgoing=True, pattern=r"^\.dmute(?: |$)(.*)")
-@register(incoming=True, from_users=DEVS, pattern=r"^\.cdmute(?: |$)(.*)")
+@register(outgoing=True, pattern=r"^\.mute(?: |$)(.*)")
+@register(incoming=True, from_users=DEVS, pattern=r"^\.cmute(?: |$)(.*)")
 async def spider(spdr):
     # Check if the function running under SQL mode
     try:
@@ -354,8 +354,8 @@ async def spider(spdr):
         return await spdr.edit("`Terjadi Kesalahan!`")
 
 
-@register(outgoing=True, pattern=r"^\.undmute(?: |$)(.*)")
-@register(incoming=True, from_users=DEVS, pattern=r"^\.cundmute(?: |$)(.*)")
+@register(outgoing=True, pattern=r"^\.unmute(?: |$)(.*)")
+@register(incoming=True, from_users=DEVS, pattern=r"^\.cunmute(?: |$)(.*)")
 async def unmoot(unmot):
     # Admin or creator check
     chat = await unmot.get_chat()
@@ -922,9 +922,9 @@ CMD_HELP.update(
         \n  •  **Function : **Membanned Pengguna dari grup.\
         \n\n  •  **Syntax :** `.unban <username/reply>`\
         \n  •  **Function : **Unbanned pengguna jadi bisa join grup lagi.\
-        \n\n  •  **Syntax :** `.dmute <username/reply> <alasan (optional)>`\
+        \n\n  •  **Syntax :** `.mute <username/reply> <alasan (optional)>`\
         \n  •  **Function : **Membisukan Seseorang Di Grup dengan menghapus pesannya, Bisa Ke Admin Juga.\
-        \n\n  •  **Syntax :** `.undmute <username/reply>`\
+        \n\n  •  **Syntax :** `.unmute <username/reply>`\
         \n  •  **Function : **Membuka bisu orang yang dibisukan.\
         \n  •  **Function : ** Membuka global mute orang yang dibisukan.\
         \n\n  •  **Syntax :** `.all`\
