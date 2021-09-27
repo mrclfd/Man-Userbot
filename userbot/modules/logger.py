@@ -185,7 +185,7 @@ async def set_gruplog(event):
         h_type = False
     elif input_str == "on":
         h_type = True
-    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "false":
+    if gvarstatus("GRUPLOG") and gvarstatus("GRUPLOG") == "true":
         GRUPLOG = False
     else:
         GRUPLOG = True
