@@ -89,6 +89,10 @@ async def variable(var):
 
 @register(outgoing=True, pattern=r"^\.set var (\w*) ([\s\S]*)")
 async def set_var(var):
+    if app is None:
+        return await var.edit(
+            "**Silahkan Tambahkan Var** `HEROKU_APP_NAME` **dan** `HEROKU_API_KEY`"
+        )
     await var.edit("`Processing Config Vars..`")
     variable = var.pattern_match.group(1)
     value = var.pattern_match.group(2)
@@ -120,10 +124,11 @@ async def set_var(var):
 
 @register(outgoing=True, pattern=r"^\.usage(?: |$)")
 async def dyno_usage(dyno):
-    """
-    Get your account Dyno Usage
-    """
-    await dyno.edit("`Processing...`")
+    if app is None:
+        return await dyno.edit(
+            "**Silahkan Tambahkan Var** `HEROKU_APP_NAME` **dan** `HEROKU_API_KEY`"
+        )
+    await dyno.edit("``Processing...`")
     useragent = (
         "Mozilla/5.0 (Linux; Android 10; SM-G975F) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -154,6 +159,7 @@ async def dyno_usage(dyno):
             minutes_remaining = remaining_quota / 60
             hours = math.floor(minutes_remaining / 60)
             minutes = math.floor(minutes_remaining % 60)
+            day = math.floor(hours / 24)
 
             """ - User App Used Quota - """
             Apps = result["apps"]
@@ -172,14 +178,15 @@ async def dyno_usage(dyno):
             await dyno.edit(
                 "✥ **Informasi Dyno Heroku :**\n"
                 "╔════════════════════╗\n"
-                f" ✣ **Penggunaan Dyno** `{app.name}` :\n"
+                f" ➠ **Penggunaan Dyno** `{app.name}` :\n"
                 f"     •  `{AppHours}`**Jam**  `{AppMinutes}`**Menit**  "
                 f"**|**  [`{AppPercentage}`**%**]"
                 "\n◖════════════════════◗\n"
-                " ✣ **Sisa kuota dyno bulan ini** :\n"
+                " ➠ **Sisa kuota dyno bulan ini** :\n"
                 f"     •  `{hours}`**Jam**  `{minutes}`**Menit**  "
                 f"**|**  [`{percentage}`**%**]"
                 "\n╚════════════════════╝"
+                f"✥ **Sisa Dyno Heroku** `{day}` **Hari Lagi**"
             )
             return True
 
