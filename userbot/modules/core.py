@@ -7,12 +7,12 @@ import os
 import sys
 from pathlib import Path
 
-from userbot import CMD_HELP, DEVS, LOGS, TMP_DOWNLOAD_DIRECTORY, bot
+from userbot import CMD_HELP, DEVS, LOGS, TEMP_DOWNLOAD_DIRECTORY, bot
 from userbot.events import register
 from userbot.utils import edit_or_reply
 
 DELETE_TIMEOUT = 5
-thumb_image_path = os.path.join(TMP_DOWNLOAD_DIRECTORY, "thumb_image.jpg")
+thumb_image_path = os.path.join(TEMP_DOWNLOAD_DIRECTORY, "thumb_image.jpg")
 
 
 async def reply_id(event):
