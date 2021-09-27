@@ -94,11 +94,11 @@ async def send(event):
             allow_cache=False,
             reply_to=reply_to_id,
             thumb=thumb,
-            caption=f"**Nama Plugin:** `{input_str}`",
+            caption=f"➠ **Nama Plugin:** `{input_str}`",
         )
         await event.delete()
     else:
-        await edit_or_reply(event, "404: File Not Found")
+        await edit_or_reply(event, "**404: File Not Found**")
 
 
 CMD_HELP.update(
@@ -106,6 +106,8 @@ CMD_HELP.update(
         "core": "**Plugin : **`core`\
         \n\n  •  **Syntax :** `.install` <reply ke file plugins>\
         \n  •  **Function : **Untuk Menginstall plugins userbot secara instan.\
+        \n\n  •  **Syntax :** `.psend` <nama plugins>\
+        \n  •  **Function : **Untuk Mengirim plugins userbot secara instan.\
     "
     }
 )
